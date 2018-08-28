@@ -7,6 +7,8 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.android.todolist.sqlAsset.AssetSQLiteOpenHelperFactory;
+
 @Database(entities = {TaskEntry.class}, version = 1, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
@@ -20,12 +22,19 @@ public abstract class AppDatabase extends RoomDatabase {
         if (sInstance == null) {
             synchronized (LOCK) {
                 Log.d(LOG_TAG, "Creating new database instance");
-                sInstance = Room.databaseBuilder(context.getApplicationContext(),
-                        AppDatabase.class, AppDatabase.DATABASE_NAME)
+//                sInstance = Room.databaseBuilder(context.getApplicationContext(),
+//                        AppDatabase.class, AppDatabase.DATABASE_NAME)
                         // Queries should be done in a separate thread to avoid locking the UI
                         // We will allow this ONLY TEMPORALLY to see that our DB is working
+//                        .allowMainThreadQueries()
+//                        .build();
+                sInstance = Room.databaseBuilder(context.getApplicationContext(),
+                        AppDatabase.class,
+                        "tasks.db")
+                        .openHelperFactory(new AssetSQLiteOpenHelperFactory())
                         .allowMainThreadQueries()
                         .build();
+
             }
         }
         Log.d(LOG_TAG, "Getting the database instance");

@@ -24,6 +24,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 
 import com.example.android.todolist.database.AppDatabase;
@@ -100,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
 
         // TODO (2) Initialize member variable for the data base
         mDb = AppDatabase.getInstance(this);
+        List<TaskEntry> mList = mDb.taskDao().loadAllTasks();
+        Log.d(TAG, " *** " + mList.size());
     }
 
     /**
